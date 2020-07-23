@@ -1,6 +1,6 @@
 package xadrez;
 
-import CamadaTabuleiro.Posicao;
+import CamadaTabuleiro.Exception;
 import CamadaTabuleiro.Tabuleiro;
 import xadrez.pecas.King;
 import xadrez.pecas.Torre;
@@ -22,9 +22,15 @@ public class PartidaXadrez {
         }
         return part;
     }
+    public void colocarNovaPeca(char coluna, int linha, PecaXadrez peca) throws java.lang.Exception{
+        tabuleiro.colocarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
+    }
     private void setupInicial() throws java.lang.Exception{
-        tabuleiro.colocarPeca(new Torre(Cor.BRANCO, tabuleiro), new Posicao(0, 0));
-        tabuleiro.colocarPeca(new Torre(Cor.BRANCO, tabuleiro), new Posicao(0, 7));
-        tabuleiro.colocarPeca(new King(Cor.BRANCO, tabuleiro), new Posicao(0, 4));
+        colocarNovaPeca('a', 1, new Torre(Cor.PRETO, tabuleiro));
+        colocarNovaPeca('h', 1, new Torre(Cor.PRETO, tabuleiro));
+        colocarNovaPeca('e', 1, new King(Cor.PRETO, tabuleiro));
+        colocarNovaPeca('a', 8, new Torre(Cor.BRANCO, tabuleiro));
+        colocarNovaPeca('h', 8, new Torre(Cor.BRANCO, tabuleiro));
+        colocarNovaPeca('e', 8, new King(Cor.BRANCO, tabuleiro));
     }
 }

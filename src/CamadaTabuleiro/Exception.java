@@ -1,4 +1,4 @@
-package xadrez;
+package CamadaTabuleiro;
 
 public class Exception extends RuntimeException{
     private static final long serialVersionUID = 1L;
