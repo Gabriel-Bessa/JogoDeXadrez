@@ -1,6 +1,8 @@
 package xadrez;
 
 import CamadaTabuleiro.Exception;
+import CamadaTabuleiro.Peca;
+import CamadaTabuleiro.Posicao;
 import CamadaTabuleiro.Tabuleiro;
 import xadrez.pecas.King;
 import xadrez.pecas.Torre;
@@ -21,6 +23,24 @@ public class PartidaXadrez {
             }
         }
         return part;
+    }
+    public PecaXadrez movimentacaoDePeca(PosicaoXadrez posicaoDeInicio, PosicaoXadrez posicaoDeDestino) throws xadrezException{
+        Posicao inicial = posicaoDeInicio.toPosicao();
+        Posicao alvo = posicaoDeDestino.toPosicao();
+        validaPosicaoInicial(inicial);
+        Peca pecaCapturada = movimentacao(alvo, inicial);
+        return (PecaXadrez) pecaCapturada;
+    }
+    private Peca movimentacao(Posicao alvo, Posicao inicial){
+        Peca p = tabuleiro.removePeca(inicial);
+        Peca capturada = tabuleiro.removePeca(alvo);
+        tabuleiro.colocarPeca(p, alvo);
+        return capturada;
+    } 
+    private void validaPosicaoInicial(Posicao inicial) throws xadrezException{
+        if(!tabuleiro.existeUmaPecaNestaPosicao(inicial)){
+            throw new xadrezException("Não existe uma peça neste posição! ("+inicial+")");
+        }
     }
     public void colocarNovaPeca(char coluna, int linha, PecaXadrez peca) throws java.lang.Exception{
         tabuleiro.colocarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
