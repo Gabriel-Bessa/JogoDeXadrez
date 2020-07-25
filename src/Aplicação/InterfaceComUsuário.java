@@ -1,14 +1,15 @@
-package jogodexadrez;
+package Aplicação;
 
+import Xadrez.Color;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import xadrez.Cor;
-import xadrez.PecaXadrez;
-import xadrez.PosicaoXadrez;
 
-public class UI {
-    
-    // https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
+import Xadrez.PecaDeXadrez;
+import Xadrez.PosicaoDoXadrez;
+
+public class InterfaceComUsuário {
+
+	// https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
 
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_BLACK = "\u001B[30m";
@@ -28,40 +29,42 @@ public class UI {
 	public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
-        
-    // https://stackoverflow.com/questions/2979383/java-clear-the-console
+	
+	// https://stackoverflow.com/questions/2979383/java-clear-the-console
 	public static void clearScreen() {
-		for (int i = 0; i < 5; ++i)
-                    System.out.println ();
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+	}	
+	
+	public static PosicaoDoXadrez LeitorDePosicaoDoXadrez(Scanner sc) {
+		try {
+			String s = sc.nextLine();
+			char coluna = s.charAt(0);
+			int linha = Integer.parseInt(s.substring(1));
+			return new PosicaoDoXadrez(coluna, linha);
+		}
+		catch (RuntimeException e) {
+			throw new InputMismatchException("ERROR - Valor Invalido! Tente valores entre a1 e h8!");
+		}
 	}
-    public static PosicaoXadrez leitorPosicaoXadrez(Scanner sc){
-        try{
-        String s = sc.nextLine();
-        char coluna = s.charAt(0);
-        int linha = Integer.parseInt(s.substring(1));
-        return new PosicaoXadrez(coluna, linha);
-        }
-        catch(RuntimeException e){
-         throw new InputMismatchException("ERROR - Valor Inválido! Tente posições entre a1 e h8!");
-        }
-    }    
-        
-    public static void printTabuleiro(PecaXadrez[][] pecas){
-        for(int i = 0; i < pecas.length; i++){
-            System.out.print((8-i)+" ");
-            for(int j = 0; j < pecas.length; j++){
-                printPeca(pecas[i][j]);
-            }
-            System.out.println();
-        }
-        System.out.println("  a b c d e f g h");
-    }
-    private static void printPeca(PecaXadrez piece) {
+	
+	public static void EscreveTabuleiro(PecaDeXadrez[][] pieces) {
+		for (int i = 0; i < pieces.length; i++) {
+			System.out.print((8 - i) + " ");
+			for (int j = 0; j < pieces.length; j++) {
+				EscrevendoPeca(pieces[i][j]);
+			}
+			System.out.println();
+		}
+		System.out.println("  a b c d e f g h");
+	}
+
+	private static void EscrevendoPeca(PecaDeXadrez piece) {
     	if (piece == null) {
             System.out.print("-");
         }
         else {
-            if (piece.getCor() == Cor.BRANCO) {
+            if (piece.getCor() == Color.BRANCO) {
                 System.out.print(ANSI_WHITE + piece + ANSI_RESET);
             }
             else {

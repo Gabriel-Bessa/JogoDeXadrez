@@ -1,67 +1,75 @@
 package CamadaTabuleiro;
 
 public class Tabuleiro {
-    private int linhas;
-    private int colunas;
-    private Peca[][] pecas;
 
-    public Tabuleiro(int linhas, int colunas) throws Exception {
-        if (linhas < 1  || colunas < 1){
-            throw new Exception("ERROR - Criação de Tabuleiro invalida!");
-        }
-        this.linhas = linhas;
-        this.colunas = colunas;
-        pecas = new Peca[linhas][colunas];
-    }
-    
-    public int getLinhas() {
-        return linhas;
-    }
-    
-    public int getColunas() {
-        return colunas;
-    }
-    
-    public Peca peca(int linha, int coluna) throws Exception{
-        if(!existePosicao(linha, coluna)){
-            throw new Exception("ERRO - Posição inexistente!");
-        }
-        return pecas[linha][coluna];
-    }
-    
-    public Peca peca(Posicao posicao){
-        return pecas[posicao.getLinha()][posicao.getColuna()];
-    }    
-       
-    public void colocarPeca(Peca peca, Posicao posicao) throws Exception{
-        if(existeUmaPecaNestaPosicao(posicao)){
-            throw new Exception("ERROR - Já existe um peça na posição: "+posicao);
-        }
-        pecas[posicao.getLinha()][posicao.getColuna()] = peca;
-        peca.posicao = posicao;
-    }
-    public Peca removePeca(Posicao posicao){
-        if (!existePosicao(posicao)){
-            throw new Exception("Posição inessistente!");
-        }
-        if(peca(posicao) == null){
-            return null;
-        }
-        Peca aux = peca(posicao);
-        aux.posicao = null;
-        pecas[posicao.getLinha()][posicao.getColuna()] = null;
-        return aux;
-    }
-    private boolean existePosicao(int linha, int coluna){
-        return linha >= 0 && linha < linhas && coluna >= 0 && coluna < colunas;
-    }
-    public boolean existePosicao(Posicao posicao){
-        return existePosicao(posicao.getLinha(), posicao.getColuna());
-    }
-    public boolean existeUmaPecaNestaPosicao(Posicao posicao) throws Exception{
-        if(!existePosicao(posicao)){
-            throw new Exception("ERRO - Posição inexistente!");
-        }
-        return peca(posicao) != null;
-    }
+	private int linhas;
+	private int colunas;
+	private Peca[][] pecas;
+	
+	public Tabuleiro(int linhas, int colunas) {
+		if (linhas < 1 || colunas < 1) {
+			throw new ExcecoesDoTabuleiro("ERROR - na criação do tabuleiro: Deve haver pelo menos 1 linha e 1 coluna!");
+		}
+		this.linhas = linhas;
+		this.colunas = colunas;
+		pecas = new Peca[linhas][colunas];
+	}
+
+	public int getLinhas() {
+		return linhas;
+	}
+
+	public int getColunas() {
+		return colunas;
+	}
+	
+	public Peca Peca(int linha, int coluna) {
+		if (!ExistePosicao(linha, coluna)) {
+			throw new ExcecoesDoTabuleiro("Posição não se encontra no  tabuleiro!");
+		}
+		return pecas[linha][coluna];
+	}
+	
+	public Peca Peca(Posicao posicao) {
+		if (!ExistePosicao(posicao)) {
+			throw new ExcecoesDoTabuleiro("Posição não se encontra no  tabuleiro!");
+		}
+		return pecas[posicao.getLinha()][posicao.getColuna()];
+	}
+	
+	public void ColocarPeca(Peca peca, Posicao posicao) {
+		if (EUmaPeca(posicao)) {
+			throw new ExcecoesDoTabuleiro("Já possui uma peça na posição: " + posicao);
+		}
+		pecas[posicao.getLinha()][posicao.getColuna()] = peca;
+		peca.posicao = posicao;
+	}
+	
+	public Peca RemoverPeca(Posicao posicao) {
+		if (!ExistePosicao(posicao)) {
+			throw new ExcecoesDoTabuleiro("Esta posição não esta no tabuleiro!");
+		}
+		if (Peca(posicao) == null) {
+			return null;
+		}
+		Peca aux = Peca(posicao);
+		aux.posicao = null;
+		pecas[posicao.getLinha()][posicao.getColuna()] = null;
+		return aux;
+	}
+	
+	private boolean ExistePosicao(int linha, int coluna) {
+		return linha >= 0 && linha < linhas && coluna >= 0 && coluna < colunas;
+	}
+	
+	public boolean ExistePosicao(Posicao posicao) {
+		return ExistePosicao(posicao.getLinha(), posicao.getColuna());
+	}
+	
+	public boolean EUmaPeca(Posicao posicao) {
+		if (!ExistePosicao(posicao)) {
+			throw new ExcecoesDoTabuleiro("Posição não está no tabuleiro!");
+		}
+		return Peca(posicao) != null;
+	}
 }
