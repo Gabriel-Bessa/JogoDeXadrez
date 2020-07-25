@@ -52,13 +52,13 @@ public class PartidaDeXadrez {
 			throw new ExcecoesDoXadrez("ERRO - Não há peça nesta possição!");
 		}
 		if (!tabuleiro.Peca(posicao).EstaPossuiMovimentosPossiveis()) {
-			throw new ExcecoesDoXadrez("Essa peça não pode movimentar para esta posição");
+			throw new ExcecoesDoXadrez("ERROR - Essa peça Não possui movimentos possiveis!");
 		}
 	}
 	
 	private void validacaoPosicaoAlvo(Posicao inicial, Posicao alvo) {
 		if (!tabuleiro.Peca(inicial).MovimentoPossivel(alvo)) {
-			throw new ExcecoesDoXadrez("The chosen piece can't move to target position");
+			throw new ExcecoesDoXadrez("ERROR - A peça escolhida não pode ir a posição de destino!");
 		}
 	}
 	

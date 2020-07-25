@@ -25,21 +25,21 @@ public class Tabuleiro {
 	
 	public Peca Peca(int linha, int coluna) {
 		if (!ExistePosicao(linha, coluna)) {
-			throw new ExcecoesDoTabuleiro("Posição não se encontra no  tabuleiro!");
+			throw new ExcecoesDoTabuleiro("ERROR - Posição não se encontra no  tabuleiro!");
 		}
 		return pecas[linha][coluna];
 	}
 	
 	public Peca Peca(Posicao posicao) {
 		if (!ExistePosicao(posicao)) {
-			throw new ExcecoesDoTabuleiro("Posição não se encontra no  tabuleiro!");
+			throw new ExcecoesDoTabuleiro("ERROR - Posição não se encontra no  tabuleiro!");
 		}
 		return pecas[posicao.getLinha()][posicao.getColuna()];
 	}
 	
 	public void ColocarPeca(Peca peca, Posicao posicao) {
 		if (EUmaPeca(posicao)) {
-			throw new ExcecoesDoTabuleiro("Já possui uma peça na posição: " + posicao);
+			throw new ExcecoesDoTabuleiro("ERROR - Já possui uma peça na posição: " + posicao);
 		}
 		pecas[posicao.getLinha()][posicao.getColuna()] = peca;
 		peca.posicao = posicao;
@@ -47,7 +47,7 @@ public class Tabuleiro {
 	
 	public Peca RemoverPeca(Posicao posicao) {
 		if (!ExistePosicao(posicao)) {
-			throw new ExcecoesDoTabuleiro("Esta posição não esta no tabuleiro!");
+			throw new ExcecoesDoTabuleiro("ERROR - Esta posição não esta no tabuleiro!");
 		}
 		if (Peca(posicao) == null) {
 			return null;
@@ -68,7 +68,7 @@ public class Tabuleiro {
 	
 	public boolean EUmaPeca(Posicao posicao) {
 		if (!ExistePosicao(posicao)) {
-			throw new ExcecoesDoTabuleiro("Posição não está no tabuleiro!");
+			throw new ExcecoesDoTabuleiro("ERROR - Posição não está no tabuleiro!");
 		}
 		return Peca(posicao) != null;
 	}
