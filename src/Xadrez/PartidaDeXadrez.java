@@ -5,12 +5,17 @@ import CamadaTabuleiro.Peca;
 import CamadaTabuleiro.Posicao;
 import Xadrez.Peças.King;
 import Xadrez.Peças.Torre;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PartidaDeXadrez {
 
 	private Tabuleiro tabuleiro;
         private int turno;
 	private Color jogador;
+        
+        private List<Peca> pecasNoTabuleiro = new ArrayList<>();
+        private List<Peca> pecasCapturadas = new ArrayList<>();
         
         public int getTurno(){
             return turno;
@@ -46,16 +51,20 @@ public class PartidaDeXadrez {
 		Posicao alvo = posicaoAlvo.toPosition();
 		validacaoPosicaoInicial(inicial);
 		validacaoPosicaoAlvo(inicial, alvo);
-		Peca pecaCapturado = Movimentacao(inicial, alvo);
+		Peca pecaCapturada = Movimentacao(inicial, alvo);
                 proximoTurno();
-		return (PecaDeXadrez)pecaCapturado;
+		return (PecaDeXadrez)pecaCapturada;
 	}
 	
 	private Peca Movimentacao(Posicao inicial, Posicao alvo) {
 		Peca p = tabuleiro.RemoverPeca(inicial);
-		Peca pecaCapturado = tabuleiro.RemoverPeca(alvo);
+		Peca pecaCapturada = tabuleiro.RemoverPeca(alvo);
 		tabuleiro.ColocarPeca(p, alvo);
-		return pecaCapturado;
+                if (pecaCapturada != null){
+                    pecasNoTabuleiro.remove(pecaCapturada);
+                    pecasCapturadas.add(pecaCapturada);
+                }
+		return pecaCapturada;
 	}
 	
 	private void validacaoPosicaoInicial(Posicao posicao) {
@@ -83,7 +92,8 @@ public class PartidaDeXadrez {
         
 	private void ColocarPeca(char coluna, int linha, PecaDeXadrez peca) {
 		tabuleiro.ColocarPeca(peca, new PosicaoDoXadrez(coluna, linha).toPosition());
-	}
+                pecasNoTabuleiro.add(peca);
+        }
 	
 	private void setupInicial() {
 	ColocarPeca('c', 1, new Torre(tabuleiro, Color.BRANCO));

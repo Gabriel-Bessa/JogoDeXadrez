@@ -7,6 +7,8 @@ import Xadrez.ExcecoesDoXadrez;
 import Xadrez.PartidaDeXadrez;
 import Xadrez.PecaDeXadrez;
 import Xadrez.PosicaoDoXadrez;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Programa {
 
@@ -14,11 +16,12 @@ public class Programa {
 		
 		Scanner sc = new Scanner(System.in);
 		PartidaDeXadrez partidaDeXadrez = new PartidaDeXadrez();
+                List<PecaDeXadrez> capturadas = new ArrayList<>();
 		
 		while (true) {
 			try {
 				InterfaceComUsuário.clearScreen();
-				InterfaceComUsuário.escrevendoPartida(partidaDeXadrez);
+				InterfaceComUsuário.escrevendoPartida(partidaDeXadrez, capturadas);
 				System.out.println();
 				System.out.print("Posição Inicial: ");
 				PosicaoDoXadrez inicial = InterfaceComUsuário.LeitorDePosicaoDoXadrez(sc);
@@ -31,8 +34,11 @@ public class Programa {
 				System.out.print("Posição Alvo: ");
 				PosicaoDoXadrez alvo = InterfaceComUsuário.LeitorDePosicaoDoXadrez(sc);
 				
-				PecaDeXadrez capturedPiece = partidaDeXadrez.movimentacaoDePecas(inicial, alvo);
-			}
+				PecaDeXadrez pecaCapturada = partidaDeXadrez.movimentacaoDePecas(inicial, alvo);
+                                if (pecaCapturada != null){
+                                    capturadas.add(pecaCapturada);
+                                }
+                        }
 			catch (ExcecoesDoXadrez | InputMismatchException e) {
 				System.out.println(e.getMessage());
                                 System.out.println("ERROR - Precione <ENTER> para prosseguir...");
