@@ -1,6 +1,7 @@
 package Aplicação;
 
 import Xadrez.Color;
+import Xadrez.PartidaDeXadrez;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -48,6 +49,13 @@ public class InterfaceComUsuário {
 		}
 	}
 	
+        public static void escrevendoPartida(PartidaDeXadrez partida){
+            EscreveTabuleiro(partida.getPecas());
+            System.out.println();
+            System.out.println("Turno: "+partida.getTurno());
+            System.out.println("Esperando jogador: "+partida.getJogador());
+        }
+        
 	public static void EscreveTabuleiro(PecaDeXadrez[][] pieces) {            
 		for (int i = 0; i < pieces.length; i++) {
 			System.out.print((8 - i) + " ");

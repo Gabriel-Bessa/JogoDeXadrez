@@ -9,9 +9,19 @@ import Xadrez.Peças.Torre;
 public class PartidaDeXadrez {
 
 	private Tabuleiro tabuleiro;
-	
+        private int turno;
+	private Color jogador;
+        
+        public int getTurno(){
+            return turno;
+        }
+        public Color getJogador(){
+            return jogador;
+        }
 	public PartidaDeXadrez() {
 		tabuleiro = new Tabuleiro(8, 8);
+                turno = 1;
+                jogador = Color.BRANCO;
 		setupInicial();
 	}
 	
@@ -37,6 +47,7 @@ public class PartidaDeXadrez {
 		validacaoPosicaoInicial(inicial);
 		validacaoPosicaoAlvo(inicial, alvo);
 		Peca pecaCapturado = Movimentacao(inicial, alvo);
+                proximoTurno();
 		return (PecaDeXadrez)pecaCapturado;
 	}
 	
@@ -51,6 +62,9 @@ public class PartidaDeXadrez {
 		if (!tabuleiro.EUmaPeca(posicao)) {
 			throw new ExcecoesDoXadrez("ERRO - Não há peça nesta possição!");
 		}
+                if (jogador != ((PecaDeXadrez)tabuleiro.Peca(posicao)).getCor()){
+                    throw new ExcecoesDoXadrez("ERROR - A peça selecionada não é sua!");
+                }
 		if (!tabuleiro.Peca(posicao).EstaPossuiMovimentosPossiveis()) {
 			throw new ExcecoesDoXadrez("ERROR - Essa peça Não possui movimentos possiveis!");
 		}
@@ -62,6 +76,11 @@ public class PartidaDeXadrez {
 		}
 	}
 	
+        private void proximoTurno(){
+            turno++;
+            jogador = (jogador == Color.BRANCO) ? Color.PRETO : Color.BRANCO;
+        }
+        
 	private void ColocarPeca(char coluna, int linha, PecaDeXadrez peca) {
 		tabuleiro.ColocarPeca(peca, new PosicaoDoXadrez(coluna, linha).toPosition());
 	}
