@@ -48,20 +48,33 @@ public class InterfaceComUsuário {
 		}
 	}
 	
-	public static void EscreveTabuleiro(PecaDeXadrez[][] pieces) {
+	public static void EscreveTabuleiro(PecaDeXadrez[][] pieces) {            
 		for (int i = 0; i < pieces.length; i++) {
 			System.out.print((8 - i) + " ");
 			for (int j = 0; j < pieces.length; j++) {
-				EscrevendoPeca(pieces[i][j]);
+				EscrevendoPeca(pieces[i][j],false);
+			}
+			System.out.println();
+		}
+		System.out.println("  a b c d e f g h");
+	}
+        public static void EscreveTabuleiro(PecaDeXadrez[][] pieces, boolean[][] movimentosPossiveis) {
+		for (int i = 0; i < pieces.length; i++) {
+			System.out.print((8 - i) + " ");
+			for (int j = 0; j < pieces.length; j++) {
+				EscrevendoPeca(pieces[i][j], movimentosPossiveis[i][j]);
 			}
 			System.out.println();
 		}
 		System.out.println("  a b c d e f g h");
 	}
 
-	private static void EscrevendoPeca(PecaDeXadrez piece) {
+	private static void EscrevendoPeca(PecaDeXadrez piece, boolean backgroundColor) {
+        if(backgroundColor){
+            System.out.print(ANSI_BLUE_BACKGROUND);
+        }
     	if (piece == null) {
-            System.out.print("-");
+            System.out.print("-" + ANSI_RESET);
         }
         else {
             if (piece.getCor() == Color.BRANCO) {

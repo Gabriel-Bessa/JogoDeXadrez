@@ -13,21 +13,25 @@ public class Programa {
 	public static void main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in);
-		PartidaDeXadrez chessMatch = new PartidaDeXadrez();
+		PartidaDeXadrez partidaDeXadrez = new PartidaDeXadrez();
 		
 		while (true) {
 			try {
 				InterfaceComUsuário.clearScreen();
-				InterfaceComUsuário.EscreveTabuleiro(chessMatch.getPecas());
+				InterfaceComUsuário.EscreveTabuleiro(partidaDeXadrez.getPecas());
 				System.out.println();
 				System.out.print("Posição Inicial: ");
-				PosicaoDoXadrez source = InterfaceComUsuário.LeitorDePosicaoDoXadrez(sc);
+				PosicaoDoXadrez inicial = InterfaceComUsuário.LeitorDePosicaoDoXadrez(sc);
 				
+                                boolean[][] movimentosPossiveis = partidaDeXadrez.movimentosPosiveis(inicial);
+                                InterfaceComUsuário.clearScreen();
+                                InterfaceComUsuário.EscreveTabuleiro(partidaDeXadrez.getPecas(), movimentosPossiveis);
+                                
 				System.out.println();
 				System.out.print("Posição Alvo: ");
-				PosicaoDoXadrez target = InterfaceComUsuário.LeitorDePosicaoDoXadrez(sc);
+				PosicaoDoXadrez alvo = InterfaceComUsuário.LeitorDePosicaoDoXadrez(sc);
 				
-				PecaDeXadrez capturedPiece = chessMatch.movimentacaoDePecas(source, target);
+				PecaDeXadrez capturedPiece = partidaDeXadrez.movimentacaoDePecas(inicial, alvo);
 			}
 			catch (ExcecoesDoXadrez | InputMismatchException e) {
 				System.out.println(e.getMessage());
