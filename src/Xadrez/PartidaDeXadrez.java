@@ -83,7 +83,8 @@ public class PartidaDeXadrez {
 	}
 	
 	private Peca movimentacao(Posicao inicial, Posicao alvo) {
-		Peca p = tabuleiro.RemoverPeca(inicial);
+		PecaDeXadrez p = (PecaDeXadrez)tabuleiro.RemoverPeca(inicial);
+                p.incrementadorDeMovimentos();
 		Peca pecaCapturada = tabuleiro.RemoverPeca(alvo);
 		tabuleiro.ColocarPeca(p, alvo);
 		
@@ -96,8 +97,9 @@ public class PartidaDeXadrez {
 	}
 	
 	private void desfazerMovimentacao(Posicao inicial, Posicao alvo, Peca pecaCapturada) {
-		Peca p = tabuleiro.RemoverPeca(alvo);
-		tabuleiro.ColocarPeca(p, inicial);
+		PecaDeXadrez p = (PecaDeXadrez)tabuleiro.RemoverPeca(alvo);
+		p.decrementadorDeMovimentos();
+                tabuleiro.ColocarPeca(p, inicial);
 		
 		if (pecaCapturada != null) {
 			tabuleiro.ColocarPeca(pecaCapturada, alvo);
