@@ -58,6 +58,9 @@ public class InterfaceComUsuário {
             escrevendoPecasCapturadas(capturadas);
             System.out.println("Turno: "+partida.getTurno());
             System.out.println("Esperando jogador: "+partida.getJogador());
+            if(partida.getCheck()){
+                System.out.println("CHECK!");
+            }
         }
         
 	public static void EscreveTabuleiro(PecaDeXadrez[][] pieces) {            
