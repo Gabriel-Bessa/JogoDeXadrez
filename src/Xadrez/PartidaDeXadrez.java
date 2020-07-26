@@ -4,6 +4,7 @@ import CamadaTabuleiro.Tabuleiro;
 import CamadaTabuleiro.Peca;
 import CamadaTabuleiro.Posicao;
 import Xadrez.Peças.King;
+import Xadrez.Peças.Peao;
 import Xadrez.Peças.Torre;
 import java.util.ArrayList;
 import java.util.List;
@@ -188,11 +189,28 @@ public class PartidaDeXadrez {
 	}
 	
 	private void initialSetup() {
-        colocarPecaNova('h', 7, new Torre(tabuleiro, Color.BRANCO));
-        colocarPecaNova('d', 1, new Torre(tabuleiro, Color.BRANCO));
+        colocarPecaNova('a', 8, new Torre(tabuleiro, Color.PRETO));
+        colocarPecaNova('h', 8, new Torre(tabuleiro, Color.PRETO));  
+        colocarPecaNova('e', 8, new King(tabuleiro, Color.PRETO));        
+        colocarPecaNova('a', 7, new Peao(tabuleiro, Color.PRETO));
+        colocarPecaNova('b', 7, new Peao(tabuleiro, Color.PRETO));
+        colocarPecaNova('c', 7, new Peao(tabuleiro, Color.PRETO));
+        colocarPecaNova('d', 7, new Peao(tabuleiro, Color.PRETO));
+        colocarPecaNova('e', 7, new Peao(tabuleiro, Color.PRETO));
+        colocarPecaNova('f', 7, new Peao(tabuleiro, Color.PRETO));
+        colocarPecaNova('g', 7, new Peao(tabuleiro, Color.PRETO));
+        colocarPecaNova('h', 7, new Peao(tabuleiro, Color.PRETO));
+        
+        colocarPecaNova('a', 2, new Peao(tabuleiro, Color.BRANCO));
+        colocarPecaNova('b', 2, new Peao(tabuleiro, Color.BRANCO));
+        colocarPecaNova('c', 2, new Peao(tabuleiro, Color.BRANCO));
+        colocarPecaNova('d', 2, new Peao(tabuleiro, Color.BRANCO));
+        colocarPecaNova('e', 2, new Peao(tabuleiro, Color.BRANCO));
+        colocarPecaNova('f', 2, new Peao(tabuleiro, Color.BRANCO));
+        colocarPecaNova('g', 2, new Peao(tabuleiro, Color.BRANCO));
+        colocarPecaNova('h', 2, new Peao(tabuleiro, Color.BRANCO));
+        colocarPecaNova('a', 1, new Torre(tabuleiro, Color.BRANCO));
+        colocarPecaNova('h', 1, new Torre(tabuleiro, Color.BRANCO));
         colocarPecaNova('e', 1, new King(tabuleiro, Color.BRANCO));
-
-        colocarPecaNova('b', 8, new Torre(tabuleiro, Color.PRETO));
-        colocarPecaNova('a', 8, new King(tabuleiro, Color.PRETO));
 	}
 }
