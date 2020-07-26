@@ -10,29 +10,36 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PartidaDeXadrez {
-
-	private Tabuleiro tabuleiro;
         private int turno;
 	private Color jogador;
-        private boolean check;
-        
-        private List<Peca> pecasNoTabuleiro = new ArrayList<>();
-        private List<Peca> pecasCapturadas = new ArrayList<>();
-        
-        public int getTurno(){
-            return turno;
-        }
-        public Color getJogador(){
-            return jogador;
-        }
-        public boolean getCheck(){
-            return check;
-        }
+	private Tabuleiro tabuleiro;
+	private boolean check;
+	private boolean checkMate;
+	
+	private List<Peca> pecaNoTabuleiro = new ArrayList<>();
+	private List<Peca>pecasCapturadas = new ArrayList<>();
+	
 	public PartidaDeXadrez() {
 		tabuleiro = new Tabuleiro(8, 8);
-                turno = 1;
-                jogador = Color.BRANCO;
-		setupInicial();
+		turno = 1;
+		jogador = Color.BRANCO;
+		initialSetup();
+	}
+	
+	public int getTurno() {
+		return turno;
+	}
+	
+	public Color getJogador() {
+		return jogador;
+	}
+	
+	public boolean getCheck() {
+		return check;
+	}
+	
+	public boolean getCheckMate() {
+		return checkMate;
 	}
 	
 	public PecaDeXadrez[][] getPecas() {
@@ -44,118 +51,146 @@ public class PartidaDeXadrez {
 		}
 		return mat;
 	}
-        
-	public boolean[][] movimentosPosiveis(PosicaoDoXadrez posicaoInicial){
-            Posicao posicao = posicaoInicial.toPosition();
-            validacaoPosicaoInicial(posicao);
-            return tabuleiro.Peca(posicao).movimentosPossiveis();
-        }
-        
+	
+	public boolean[][] movimentosPosiveis(PosicaoDoXadrez posicaoInicial) {
+		Posicao inicial = posicaoInicial.toPosition();
+		validacaoDaPosicaoInicial(inicial);
+		return tabuleiro.Peca(inicial).movimentosPossiveis();
+	}
+	
 	public PecaDeXadrez movimentacaoDePecas(PosicaoDoXadrez posicaoInicial, PosicaoDoXadrez posicaoAlvo) {
 		Posicao inicial = posicaoInicial.toPosition();
 		Posicao alvo = posicaoAlvo.toPosition();
-		validacaoPosicaoInicial(inicial);
-		validacaoPosicaoAlvo(inicial, alvo);
-		Peca pecaCapturada = Movimentacao(inicial, alvo);
-                
-                if(testeCheck(jogador)){
-                    desfazerMovimento(inicial, alvo, pecaCapturada);
-                    throw new ExcecoesDoXadrez("ERROR - Você não pode ficar em check!");
-                }
-                
-                check = (testeCheck(oponente(jogador))) ? true : false;
-                
-                proximoTurno();
+		validacaoDaPosicaoInicial(inicial);
+		validacaoDaPosicaoFinal(inicial, alvo);
+		Peca pecaCapturada = movimentacao(inicial, alvo);
+		
+		if (testCheck(jogador)) {
+			desfazerMovimentacao(inicial, alvo, pecaCapturada);
+			throw new ExcecoesDoXadrez("ERROR - Não pode colocar a si mesmo em check!");
+		}
+		
+		check = (testCheck(oponente(jogador)));
+
+		if (testCheckMate(oponente(jogador))) {
+			checkMate = true;
+		}
+		else {
+			proximoTurno();
+		}
+		
 		return (PecaDeXadrez)pecaCapturada;
 	}
 	
-	private Peca Movimentacao(Posicao inicial, Posicao alvo) {
+	private Peca movimentacao(Posicao inicial, Posicao alvo) {
 		Peca p = tabuleiro.RemoverPeca(inicial);
 		Peca pecaCapturada = tabuleiro.RemoverPeca(alvo);
 		tabuleiro.ColocarPeca(p, alvo);
-                if (pecaCapturada != null){
-                    pecasNoTabuleiro.remove(pecaCapturada);
-                    pecasCapturadas.add(pecaCapturada);
-                }
+		
+		if (pecaCapturada != null) {
+			pecaNoTabuleiro.remove(pecaCapturada);
+			pecasCapturadas.add(pecaCapturada);
+		}
+		
 		return pecaCapturada;
 	}
 	
-        private void desfazerMovimento(Posicao inicio, Posicao alvo, Peca capturada){
-            Peca p = tabuleiro.RemoverPeca(alvo);
-            tabuleiro.ColocarPeca(p, inicio);
-            if(capturada != null){
-                tabuleiro.ColocarPeca(capturada, alvo);
-                pecasCapturadas.remove(capturada);
-                pecasNoTabuleiro.add(capturada);
-            }
-        }
-        
-	private void validacaoPosicaoInicial(Posicao posicao) {
+	private void desfazerMovimentacao(Posicao inicial, Posicao alvo, Peca pecaCapturada) {
+		Peca p = tabuleiro.RemoverPeca(alvo);
+		tabuleiro.ColocarPeca(p, inicial);
+		
+		if (pecaCapturada != null) {
+			tabuleiro.ColocarPeca(pecaCapturada, alvo);
+			pecasCapturadas.remove(pecaCapturada);
+			pecaNoTabuleiro.add(pecaCapturada);
+		}
+	}
+	
+	private void validacaoDaPosicaoInicial(Posicao posicao) {
 		if (!tabuleiro.EUmaPeca(posicao)) {
-			throw new ExcecoesDoXadrez("ERRO - Não há peça nesta possição!");
+			throw new ExcecoesDoXadrez("ERRO - Não possui peça nesta posição!");
 		}
-                if (jogador != ((PecaDeXadrez)tabuleiro.Peca(posicao)).getCor()){
-                    throw new ExcecoesDoXadrez("ERROR - A peça selecionada não é sua!");
-                }
+		if (jogador != ((PecaDeXadrez)tabuleiro.Peca(posicao)).getCor()) {
+			throw new ExcecoesDoXadrez("ERROR - Essa peça não é sua!");
+		}
 		if (!tabuleiro.Peca(posicao).EstaPossuiMovimentosPossiveis()) {
-			throw new ExcecoesDoXadrez("ERROR - Essa peça Não possui movimentos possiveis!");
+			throw new ExcecoesDoXadrez("ERROR - A peça escolhida não possui movimentos possíveis!");
 		}
 	}
 	
-	private void validacaoPosicaoAlvo(Posicao inicial, Posicao alvo) {
+	private void validacaoDaPosicaoFinal(Posicao inicial, Posicao alvo) {
 		if (!tabuleiro.Peca(inicial).MovimentoPossivel(alvo)) {
-			throw new ExcecoesDoXadrez("ERROR - A peça escolhida não pode ir a posição de destino!");
+			throw new ExcecoesDoXadrez("ERROR - A peça escolhida não pode se mover para a posição alvo!");
 		}
 	}
 	
-        private void proximoTurno(){
-            turno++;
-            jogador = (jogador == Color.BRANCO) ? Color.PRETO : Color.BRANCO;
-        }
-        
-        private Color oponente(Color cor){
-            return (cor == Color.BRANCO) ? Color.PRETO : Color.BRANCO;
-        }
-        
-        private PecaDeXadrez king(Color cor){
-            List<Peca> list = pecasNoTabuleiro.stream().filter(x ->((PecaDeXadrez)x).getCor() == cor).collect(Collectors.toList());
-            for(Peca p: list){
-                if (p instanceof King){
-                    return (PecaDeXadrez)p;
-                }
-            }
-            throw new IllegalStateException("ERROR - Não existe rei da cor "+cor+" no tabuleiro");
-        }
-        
-        private boolean testeCheck(Color cor){
-            Posicao kingPosicao = king(cor).getPosicaoXadrez().toPosition();
-            List<Peca> pecaOponente = pecasNoTabuleiro.stream().filter(x ->((PecaDeXadrez)x).getCor() == oponente(cor)).collect(Collectors.toList());
-            for(Peca p : pecaOponente){
-                boolean[][] mat = p.movimentosPossiveis();
-                if (mat[kingPosicao.getLinha()][kingPosicao.getColuna()]){
-                return true;
-                }
-            }
-            return false;
-        }
-	private void ColocarPeca(char coluna, int linha, PecaDeXadrez peca) {
-		tabuleiro.ColocarPeca(peca, new PosicaoDoXadrez(coluna, linha).toPosition());
-                pecasNoTabuleiro.add(peca);
-        }
+	private void proximoTurno() {
+		turno++;
+		jogador = (jogador == Color.BRANCO) ? Color.PRETO : Color.BRANCO;
+	}
 	
-	private void setupInicial() {
-	ColocarPeca('c', 1, new Torre(tabuleiro, Color.BRANCO));
-        ColocarPeca('c', 2, new Torre(tabuleiro, Color.BRANCO));
-        ColocarPeca('d', 2, new Torre(tabuleiro, Color.BRANCO));
-        ColocarPeca('e', 2, new Torre(tabuleiro, Color.BRANCO));
-        ColocarPeca('e', 1, new Torre(tabuleiro, Color.BRANCO));
-        ColocarPeca('d', 1, new King(tabuleiro, Color.BRANCO));
+	private Color oponente(Color color) {
+		return (color == Color.BRANCO) ? Color.PRETO : Color.BRANCO;
+	}
+	
+	private PecaDeXadrez king(Color color) {
+		List<Peca> list = pecaNoTabuleiro.stream().filter(x -> ((PecaDeXadrez)x).getCor()== color).collect(Collectors.toList());
+		for (Peca p : list) {
+			if (p instanceof King) {
+				return (PecaDeXadrez)p;
+			}
+		}
+		throw new IllegalStateException("Não possui um rei " + color + " no tabuleiro!");
+	}
+	
+	private boolean testCheck(Color cor) {
+		Posicao kingPosition = king(cor).getPosicaoXadrez().toPosition();
+		List<Peca> opponentPieces = pecaNoTabuleiro.stream().filter(x -> ((PecaDeXadrez)x).getCor()== oponente(cor)).collect(Collectors.toList());
+		for (Peca p : opponentPieces) {
+			boolean[][] mat = p.movimentosPossiveis();
+			if (mat[kingPosition.getLinha()][kingPosition.getColuna()]) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean testCheckMate(Color cor) {
+		if (!testCheck(cor)) {
+			return false;
+		}
+		List<Peca> list = pecaNoTabuleiro.stream().filter(x -> ((PecaDeXadrez)x).getCor()== cor).collect(Collectors.toList());
+		for (Peca p : list) {
+			boolean[][] mat = p.movimentosPossiveis();
+			for (int i=0; i<tabuleiro.getLinhas(); i++) {
+				for (int j=0; j<tabuleiro.getColunas(); j++) {
+					if (mat[i][j]) {
+						Posicao inicial = ((PecaDeXadrez)p).getPosicaoXadrez().toPosition();
+						Posicao alvo = new Posicao(i, j);
+						Peca pecaCapturada = movimentacao(inicial, alvo);
+						boolean testCheck = testCheck(cor);
+						desfazerMovimentacao(inicial, alvo, pecaCapturada);
+						if (!testCheck) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}	
+	
+	private void colocarPecaNova(char coluna, int linha, PecaDeXadrez peca) {
+		tabuleiro.ColocarPeca(peca, new PosicaoDoXadrez(coluna, linha).toPosition());
+		pecaNoTabuleiro.add(peca);
+	}
+	
+	private void initialSetup() {
+        colocarPecaNova('h', 7, new Torre(tabuleiro, Color.BRANCO));
+        colocarPecaNova('d', 1, new Torre(tabuleiro, Color.BRANCO));
+        colocarPecaNova('e', 1, new King(tabuleiro, Color.BRANCO));
 
-        ColocarPeca('c', 7, new Torre(tabuleiro, Color.PRETO));
-        ColocarPeca('c', 8, new Torre(tabuleiro, Color.PRETO));
-        ColocarPeca('d', 7, new Torre(tabuleiro, Color.PRETO));
-        ColocarPeca('e', 7, new Torre(tabuleiro, Color.PRETO));
-        ColocarPeca('e', 8, new Torre(tabuleiro, Color.PRETO));
-        ColocarPeca('d', 8, new King(tabuleiro, Color.PRETO));
+        colocarPecaNova('b', 8, new Torre(tabuleiro, Color.PRETO));
+        colocarPecaNova('a', 8, new King(tabuleiro, Color.PRETO));
 	}
 }

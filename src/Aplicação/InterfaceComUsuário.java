@@ -57,27 +57,33 @@ public class InterfaceComUsuário {
             System.out.println();
             escrevendoPecasCapturadas(capturadas);
             System.out.println("Turno: "+partida.getTurno());
-            System.out.println("Esperando jogador: "+partida.getJogador());
-            if(partida.getCheck()){
-                System.out.println("CHECK!");
+            if(!partida.getCheckMate()){
+                System.out.println("Esperando jogador: "+partida.getJogador());
+                if(partida.getCheck()){
+                    System.out.println("CHECK!");
+                }
+            }
+            else{
+                System.out.println("CHECKMATE!");
+                System.out.println("VENCEDOR: " + partida.getJogador());
             }
         }
         
-	public static void EscreveTabuleiro(PecaDeXadrez[][] pieces) {            
-		for (int i = 0; i < pieces.length; i++) {
+	public static void EscreveTabuleiro(PecaDeXadrez[][] pecas) {            
+		for (int i = 0; i < pecas.length; i++) {
 			System.out.print((8 - i) + " ");
-			for (int j = 0; j < pieces.length; j++) {
-				EscrevendoPeca(pieces[i][j],false);
+			for (int j = 0; j < pecas.length; j++) {
+				EscrevendoPeca(pecas[i][j],false);
 			}
 			System.out.println();
 		}
 		System.out.println("  a b c d e f g h");
 	}
-        public static void EscreveTabuleiro(PecaDeXadrez[][] pieces, boolean[][] movimentosPossiveis) {
-		for (int i = 0; i < pieces.length; i++) {
+        public static void EscreveTabuleiro(PecaDeXadrez[][] pecas, boolean[][] movimentosPossiveis) {
+		for (int i = 0; i < pecas.length; i++) {
 			System.out.print((8 - i) + " ");
-			for (int j = 0; j < pieces.length; j++) {
-				EscrevendoPeca(pieces[i][j], movimentosPossiveis[i][j]);
+			for (int j = 0; j < pecas.length; j++) {
+				EscrevendoPeca(pecas[i][j], movimentosPossiveis[i][j]);
 			}
 			System.out.println();
 		}
