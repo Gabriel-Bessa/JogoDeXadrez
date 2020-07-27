@@ -3,8 +3,11 @@ package Xadrez;
 import CamadaTabuleiro.Tabuleiro;
 import CamadaTabuleiro.Peca;
 import CamadaTabuleiro.Posicao;
+import Xadrez.Peças.Bispo;
+import Xadrez.Peças.Cavalo;
 import Xadrez.Peças.King;
 import Xadrez.Peças.Peao;
+import Xadrez.Peças.Queen;
 import Xadrez.Peças.Torre;
 import java.util.ArrayList;
 import java.util.List;
@@ -190,8 +193,13 @@ public class PartidaDeXadrez {
 	
 	private void initialSetup() {
         colocarPecaNova('a', 8, new Torre(tabuleiro, Color.PRETO));
-        colocarPecaNova('h', 8, new Torre(tabuleiro, Color.PRETO));  
-        colocarPecaNova('e', 8, new King(tabuleiro, Color.PRETO));        
+        colocarPecaNova('h', 8, new Torre(tabuleiro, Color.PRETO)); 
+        colocarPecaNova('c', 8, new Bispo(tabuleiro, Color.PRETO));         
+        colocarPecaNova('f', 8, new Bispo(tabuleiro, Color.PRETO));
+        colocarPecaNova('b', 8, new Cavalo(tabuleiro, Color.PRETO));
+        colocarPecaNova('g', 8, new Cavalo(tabuleiro, Color.PRETO));
+        colocarPecaNova('e', 8, new King(tabuleiro, Color.PRETO)); 
+        colocarPecaNova('d', 8, new Queen(tabuleiro, Color.PRETO));
         colocarPecaNova('a', 7, new Peao(tabuleiro, Color.PRETO));
         colocarPecaNova('b', 7, new Peao(tabuleiro, Color.PRETO));
         colocarPecaNova('c', 7, new Peao(tabuleiro, Color.PRETO));
@@ -211,6 +219,11 @@ public class PartidaDeXadrez {
         colocarPecaNova('h', 2, new Peao(tabuleiro, Color.BRANCO));
         colocarPecaNova('a', 1, new Torre(tabuleiro, Color.BRANCO));
         colocarPecaNova('h', 1, new Torre(tabuleiro, Color.BRANCO));
+        colocarPecaNova('b', 1, new Cavalo(tabuleiro, Color.BRANCO));
+        colocarPecaNova('f', 1, new Cavalo(tabuleiro, Color.BRANCO));
+        colocarPecaNova('g', 1, new Bispo(tabuleiro, Color.BRANCO)); 
+        colocarPecaNova('c', 1, new Bispo(tabuleiro, Color.BRANCO)); 
         colocarPecaNova('e', 1, new King(tabuleiro, Color.BRANCO));
+        colocarPecaNova('d', 1, new Queen(tabuleiro, Color.BRANCO));
 	}
 }
