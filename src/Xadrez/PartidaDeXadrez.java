@@ -9,7 +9,6 @@ import Xadrez.Peças.King;
 import Xadrez.Peças.Peao;
 import Xadrez.Peças.Queen;
 import Xadrez.Peças.Torre;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -120,7 +119,7 @@ public class PartidaDeXadrez {
             throw new IllegalStateException("ERRO - Não há peça a ser promovida!");
             }
             if(!tipo.equals("B") && !tipo.equals("C") && !tipo.equals("Q") && !tipo.equals("T")){
-                throw new InvalidParameterException("ERRO - Tipo invalido para promoção!");
+                return promocao;
             }
             
            Posicao posi = promocao.getPosicaoXadrez().toPosition();
@@ -237,7 +236,7 @@ public class PartidaDeXadrez {
 	
 	private void validacaoDaPosicaoInicial(Posicao posicao) {
 		if (!tabuleiro.EUmaPeca(posicao)) {
-			throw new ExcecoesDoXadrez("ERRO - Não possui peça nesta posição!");
+			throw new ExcecoesDoXadrez("ERROR - Não possui peça nesta posição!");
 		}
 		if (jogador != ((PecaDeXadrez)tabuleiro.Peca(posicao)).getCor()) {
 			throw new ExcecoesDoXadrez("ERROR - Essa peça não é sua!");

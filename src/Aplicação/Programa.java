@@ -42,7 +42,11 @@ public class Programa {
                 
                 if(partidaDeXadrez.getPromocao() != null){
                     System.out.println("Entre ccom a nova peça (B/N/R/Q): ");
-                    String tipo = sc.nextLine();
+                    String tipo = sc.nextLine().toUpperCase();
+                    while(!tipo.equals("B") && !tipo.equals("C") && !tipo.equals("Q") && !tipo.equals("T")){
+                       System.out.println("ERROR - Entre ccom a nova peça (B/N/R/Q): ");
+                       tipo = sc.nextLine().toUpperCase(); 
+                    }
                     partidaDeXadrez.recolocarPecaPromocao(tipo);
                 }
             } 
