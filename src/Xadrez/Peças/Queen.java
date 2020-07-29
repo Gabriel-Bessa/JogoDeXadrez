@@ -18,7 +18,7 @@ public class Queen extends PecaDeXadrez{
 		
 		Posicao p = new Posicao(0, 0);
 		
-                // Acima
+                // Acimaz
 		p.setValores(posicao.getLinha() - 1, posicao.getColuna());
 		while (getTabuleiro().ExistePosicao(p) && !getTabuleiro().EUmaPeca(p)) {
 			mat[p.getLinha()][p.getColuna()] = true;

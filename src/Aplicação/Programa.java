@@ -39,6 +39,12 @@ public class Programa {
                 if (pecaCapturada != null) {
                     capturadas.add(pecaCapturada);
                 }
+                
+                if(partidaDeXadrez.getPromocao() != null){
+                    System.out.println("Entre ccom a nova peça (B/N/R/Q): ");
+                    String tipo = sc.nextLine();
+                    partidaDeXadrez.recolocarPecaPromocao(tipo);
+                }
             } 
             catch (ExcecoesDoXadrez | InputMismatchException e) {
                 System.out.println(e.getMessage());
